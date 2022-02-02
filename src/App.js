@@ -1,24 +1,33 @@
-import logo from './logo.svg';
+
 import './App.css';
+import Movi from './Movi';
+import moviesJson from './movies.json'
+import PageWrapper from './PageWrapper';
+import Paginacion from './Paginacion';
+import { useState } from 'react/cjs/react.production.min';
 
 function App() {
+
+  const [paginaActual, setPaginaActual] = useState(1);
+
+  let movies = moviesJson;
+
+  movies = movies.slice((paginaActual - 1) *5, paginaActual*5 );
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PageWrapper>
+      {movies.map(movie =>
+        <Movi titulo={movie.titulo} calificacion={movie.calificacion} director={movie.director} actores={movie.actores} fecha={movie.fecha} duracion={movie.duracion} img={movie.img}>
+          {movie.descripcion}
+        </Movi>
+        )}
+    <Paginacion pagina={paginaActual} total={4}onChange={(pagina) =>{
+      setPaginaActual(pagina)
+    }}/>
+
+    </PageWrapper>
+
+   
   );
 }
 
